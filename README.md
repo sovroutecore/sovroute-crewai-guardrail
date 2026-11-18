@@ -3,14 +3,13 @@
 Production-ready integration connecting **CrewAI** agents to **SovRoute**'s sovereign Bitcoin Core v31.1 & EVM forensics MCP server (`https://node.sovroute.com/mcp`) over **Streamable HTTP**.
 
 ## Why This Matters
-AI agents handling payments or treasury operations shouldn't guess fee rates, mempool congestion, 0-conf Replace-By-Fee (RBF) risks, or malicious EVM contracts. SovRoute acts as a **deterministic pre-flight guardrail** across **8 read-only & zero-broadcast tools**:
+AI agents handling payments or treasury operations shouldn't guess fee rates, mempool congestion, 0-conf Replace-By-Fee (RBF) risks, or malicious EVM delegations. SovRoute acts as a **deterministic pre-flight guardrail** across **7 read-only & zero-broadcast tools**:
 
 1. **Live Fee & Mempool Oracle** (`get_bitcoin_smart_fees`, `get_mempool_entropy`, `verify_block_header`)
 2. **Next-Block Miner Template X-Ray** (`get_next_block_xray`)
 3. **0-Conf RBF Double-Spend Shield** (`check_rbf_fraud_shield`)
 4. **Zero-Broadcast Consensus Simulator** (`simulate_raw_transaction`)
 5. **EIP-7702 AuthTx Drainer Shield** (`inspect_eip7702_authorization`)
-6. **PyTorch ONNX Neural Bytecode Risk Classifier** (`scan_evm_bytecode_risk_ml`)
 
 ## Option A: CrewAI 1.x Native 1-Line DSL (Recommended)
 No extra adapter boilerplate or wallet required:
@@ -21,8 +20,8 @@ from crewai import Agent
 security_analyst = Agent(
     role="Bitcoin & EVM Pre-Flight Security Analyst",
     goal="Verify transaction safety before accepting 0-conf payments or signing EVM delegations.",
-    backstory="Deterministic blockchain risk officer backed by bare-metal Bitcoin Core v31.1 and ONNX ML.",
-    mcps=["https://node.sovroute.com/mcp"],  # All 8 read-only safety tools
+    backstory="Deterministic blockchain risk officer backed by bare-metal Bitcoin Core v31.1 and opcode forensics.",
+    mcps=["https://node.sovroute.com/mcp"],  # All 7 deterministic safety tools
 )
 ```
 
