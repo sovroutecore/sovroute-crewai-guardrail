@@ -1,17 +1,32 @@
-# SovRoute × CrewAI — Bitcoin Pre-Flight Security Guardrail
+# SovRoute × CrewAI — Bitcoin & EVM Pre-Flight Security Guardrail
 
 Production-ready integration connecting **CrewAI** agents to **SovRoute**'s sovereign Bitcoin Core v31.1 & EVM forensics MCP server (`https://node.sovroute.com/mcp`) over **Streamable HTTP**.
 
 ## Why This Matters
-AI agents handling payments or treasury operations shouldn't guess fee rates, mempool congestion, or 0-conf Replace-By-Fee (RBF) risks. SovRoute acts as a **deterministic pre-flight guardrail**:
+AI agents handling payments or treasury operations shouldn't guess fee rates, mempool congestion, 0-conf Replace-By-Fee (RBF) risks, or malicious EVM contracts. SovRoute acts as a **deterministic pre-flight guardrail** across **8 read-only & zero-broadcast tools**:
 
-1. **Live Fee & Mempool Oracle** (`get_bitcoin_smart_fees`, `get_mempool_entropy`)
+1. **Live Fee & Mempool Oracle** (`get_bitcoin_smart_fees`, `get_mempool_entropy`, `verify_block_header`)
 2. **Next-Block Miner Template X-Ray** (`get_next_block_xray`)
 3. **0-Conf RBF Double-Spend Shield** (`check_rbf_fraud_shield`)
 4. **Zero-Broadcast Consensus Simulator** (`simulate_raw_transaction`)
 5. **EIP-7702 AuthTx Drainer Shield** (`inspect_eip7702_authorization`)
+6. **PyTorch ONNX Neural Bytecode Risk Classifier** (`scan_evm_bytecode_risk_ml`)
 
-## Quick Start
+## Option A: CrewAI 1.x Native 1-Line DSL (Recommended)
+No extra adapter boilerplate or wallet required:
+
+```python
+from crewai import Agent
+
+security_analyst = Agent(
+    role="Bitcoin & EVM Pre-Flight Security Analyst",
+    goal="Verify transaction safety before accepting 0-conf payments or signing EVM delegations.",
+    backstory="Deterministic blockchain risk officer backed by bare-metal Bitcoin Core v31.1 and ONNX ML.",
+    mcps=["https://node.sovroute.com/mcp"],  # All 8 read-only safety tools
+)
+```
+
+## Option B: Full Demo Script (`MCPServerAdapter`)
 
 ```bash
 python -m venv .venv
@@ -61,5 +76,5 @@ HOLD: Due to the high risk associated with the BIP-125 RBF status, it is advised
 ```
 
 ## Public Demo vs. Production
-* **Public Demo Mode:** `https://node.sovroute.com/mcp` allows rate-limited read-only & zero-broadcast inspection (20 req/min per IP) with zero wallet setup.
+* **Public Demo Mode:** `https://node.sovroute.com/mcp` allows rate-limited read-only & zero-broadcast inspection (**120 req/min per IP**) with zero wallet setup.
 * **Production / High-Throughput:** Configure `SOVROUTE_MCP_API_KEY` or use the L402 / x402 REST endpoints documented at `https://node.sovroute.com/openapi.json`.
